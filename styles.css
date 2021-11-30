@@ -7,6 +7,7 @@ body {
   font-family: var(--todo-font-family);
   margin: 0 auto;
   max-width: 35rem;
+  width: 100vw;
 }
 
 h1 {
