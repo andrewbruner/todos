@@ -9,6 +9,10 @@ function initialize() {
   todoInput.placeholder = 'What needs to be done?';
   appDiv.append(todoInput);
   appDiv.append(todoUl);
+  // set up initial database
+  if (!database.getItem('todos')) {
+    database.setItem('todos', '[]');
+  }
 }
 
 function updateView(action, index) {
