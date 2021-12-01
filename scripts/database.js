@@ -3,7 +3,6 @@ const Database = function () {
   this.addTodo = addTodo;
   this.toggleTodo = toggleTodo;
   this.deleteTodo = deleteTodo;
-  
 
   let database;
   if (window.localStorage.getItem('todos') === null) {

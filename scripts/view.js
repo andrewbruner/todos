@@ -1,4 +1,5 @@
 import database from './database.js';
+import handlers from './app.js';
 
 const View = function () {
   this.initialize = initialize;
@@ -18,11 +19,13 @@ const View = function () {
     getTodos();
   }
 
+  let dataKey;
   function getTodos() {
     let todos = database.getTodos();
-    todos.map((todo) => {
+    todos.map((todo, index) => {
       let todoUl = document.querySelector('ul');
       let todoLi = document.createElement('li');
+      todoLi.draggable = true;
       let todoCheckbox = document.createElement('input');
       todoCheckbox.type = 'checkbox';
       if (todo.isCompleted) {
@@ -47,6 +50,11 @@ const View = function () {
     let todo = todos[todos.length - 1];
     let todoUl = document.querySelector('ul');
     let todoLi = document.createElement('li');
+    todoLi.draggable = true;
+    todoLi.addEventListener('dragstart', handlers.handleDragStartTodo);
+    todoLi.addEventListener('drag', handlers.handleDragTodo);
+    todoLi.addEventListener('dragenter', handlers.handleDragEnterTodo);
+    todoLi.addEventListener('dragend', handlers.handleDragEndTodo);
     let todoCheckbox = document.createElement('input');
     todoCheckbox.type = 'checkbox';
     todoLi.append(todoCheckbox);
@@ -60,15 +68,17 @@ const View = function () {
   }
 
   function toggleTodo(index) {
-    let todoUl = document.querySelector('ul');
-    let todoLi = todoUl.querySelectorAll('li')[index];
+    let todoLis = document.querySelectorAll('li');
+    todoLis = Array.from(todoLis);
+    let todoLi = todoLis[index];
     let todoLabel = todoLi.querySelector('label');
     todoLabel.classList.toggle('isCompleted');
   }
 
   function deleteTodo(index) {
-    let todoUl = document.querySelector('ul');
-    let todoLi = todoUl.querySelectorAll('li')[index];
+    let todoLis = document.querySelectorAll('li');
+    todoLis = Array.from(todoLis);
+    let todoLi = todoLis[index];
     todoLi.remove();
   }
 };
