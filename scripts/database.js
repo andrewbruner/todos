@@ -1,6 +1,7 @@
 const Database = function () {
   this.getTodos = getTodos;
   this.addTodo = addTodo;
+  this.dragTodo = dragTodo;
   this.toggleTodo = toggleTodo;
   this.deleteTodo = deleteTodo;
 
@@ -24,6 +25,23 @@ const Database = function () {
       isCompeted: false,
     };
     todos.push(todo);
+    todos = JSON.stringify(todos);
+    database.setItem('todos', todos);
+  }
+
+  function dragTodo(draggedTodoIndex, direction) {
+    let todos = database.getItem('todos');
+    todos = JSON.parse(todos);
+    let draggedTodo = todos[draggedTodoIndex];
+    switch (direction) {
+      case 'down':
+        todos[draggedTodoIndex] = todos[draggedTodoIndex + 1];
+        todos[draggedTodoIndex + 1] = draggedTodo;
+        break;
+      case 'up':
+        todos[draggedTodoIndex] = todos[draggedTodoIndex - 1];
+        todos[draggedTodoIndex - 1] = draggedTodo;
+    }
     todos = JSON.stringify(todos);
     database.setItem('todos', todos);
   }

@@ -28,10 +28,14 @@ function handleDragEnterTodo(event) {
   let todoLis = document.querySelectorAll('li');
   todoLis = Array.from(todoLis);
   let draggedOverTodo = event.currentTarget;
-  if (todoLis.indexOf(draggedTodo) < todoLis.indexOf(draggedOverTodo)) {
+  let draggedTodoIndex = todoLis.indexOf(draggedTodo);
+  let draggedOverTodoIndex = todoLis.indexOf(draggedOverTodo);
+  if (draggedTodoIndex < draggedOverTodoIndex) {
     draggedTodo.insertAdjacentElement('beforebegin', draggedOverTodo);
-  } else if (todoLis.indexOf(draggedTodo) > todoLis.indexOf(draggedOverTodo)) {
+    database.dragTodo(draggedTodoIndex, 'down');
+  } else if (draggedTodoIndex > draggedOverTodoIndex) {
     draggedTodo.insertAdjacentElement('afterend', draggedOverTodo);
+    database.dragTodo(draggedTodoIndex, 'up');
   }
 }
 
