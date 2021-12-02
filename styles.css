@@ -17,17 +17,14 @@ h1 {
 }
 
 #app {
-  border: 1px solid var(--todo-border-color);
   margin: 0 1rem;
 }
 
 input[type='text'] {
-  border-width: 0 0 1px 0;
-  border-color: var(--todo-border-color);
+  border: 1px solid var(--todo-border-color);
   font-family: var(--todo-font-family);
   font-size: 1rem;
   height: 2rem;
-  line-height: 2rem;
   padding: 0 0.25rem;
   width: 100%;
 }
@@ -43,32 +40,27 @@ ul {
 }
 
 li {
-  border-bottom: 1px solid var(--todo-border-color);
+  align-items: center;
   cursor: default;
   display: flex;
   height: 2rem;
-  justify-content: space-between;
+  justify-content: left;
 }
 
-li:last-child {
-  border-bottom: 0;
+.isDragging {
+  background: lightgray;
 }
 
-li span {
-  display: flex;
-  align-items: center;
+li input {
+  height: 1.25rem;
+  width: 1.25rem;
 }
 
 .isCompleted {
+  color: var(--todo-border-color);
   text-decoration: line-through;
 }
 
-li label {
-  font-size: 1rem;
-}
-
 li button {
-  align-items: center;
-  display: flex;
-  margin: 0.25rem;
+  margin: 0.25rem 0.25rem 0.25rem auto;
 }
