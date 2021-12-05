@@ -1,7 +1,7 @@
 import database from './database.js';
 import view from './view.js';
 
-view.initialize();
+view.viewTodos();
 
 function handleAddTodo(event) {
   if (document.activeElement === todoInput) {

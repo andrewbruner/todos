@@ -36,6 +36,7 @@ view.js
 - getTodos()
 - addTodo(todo)
 - toggleTodo(index)
+- updateToggleAllCheckbox()
 - deleteTodo(index)
 - moveTodo(movedTodo, direction)
 
