@@ -11,10 +11,10 @@
 - Delete todo
 - Reorganize todos via drag-and-drop (before browser refresh)
 - Allow drag-and-drop to update database
+- Toggle all todos at once
 
 ### Upcoming Features
 
-- Toggle all todos at once
 - Toggle view of all active or completed todos
 - Display current number of todos left to be done
 
