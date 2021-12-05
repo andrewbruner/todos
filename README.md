@@ -18,4 +18,25 @@
 - Toggle view of all active or completed todos
 - Display current number of todos left to be done
 
+## Architecture
+app.js
+- todoInput - keydown, 'Enter'
+- toggleAllCheckbox, change
+- todoCheckbox - change
+- todoDeleteButton - click
+- todoLi - dragStart, drag, dragEnter, dragOver, dragEnd
+
+database.js
+- addTodo(todoText)
+- toggleTodo(index)
+- deleteTodo(index)
+- moveTodo(movedTodo, direction)
+
+view.js
+- getTodos()
+- addTodo(todo)
+- toggleTodo(index)
+- deleteTodo(index)
+- moveTodo(movedTodo, direction)
+
 _Todos is a personal project of [Andrew Bruner](https://github.com/andrewbruner)._
