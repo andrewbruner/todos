@@ -56,6 +56,32 @@ function handleToggleTodo(event) {
   view.toggleTodo(index);
 }
 
+// Todo: clear ToggleAllCheckbox when adding new todo or unchecking single todo or deleting all current todos
+// aka when all todos are completed, the checkbox should be checked and vice versa
+function handleToggleAll(event) {
+  let toggleAllCheckbox = event.target;
+  let todoLis = Array.from(todoUl.children);
+  if (toggleAllCheckbox.checked) {
+    todoLis.map(todoLi => {
+      if (!todoLi.querySelector('input').checked) {
+        todoLi.querySelector('input').checked = true;
+        let index = todoLis.indexOf(todoLi);
+        database.toggleTodo(index);
+        view.toggleTodo(index);        
+      }
+    });
+  } else if (!toggleAllCheckbox.checked) {
+    todoLis.map(todoLi => {
+      if (todoLi.querySelector('input').checked) {
+        todoLi.querySelector('input').checked = false;
+        let index = todoLis.indexOf(todoLi);
+        database.toggleTodo(index);
+        view.toggleTodo(index);
+      }
+    });
+  }
+}
+
 function handleDeleteTodo(event) {
   if (event.target.tagName === 'BUTTON') {
     let todoLi = event.target.parentElement;
@@ -66,8 +92,10 @@ function handleDeleteTodo(event) {
   }
 }
 
-let todoInput = document.querySelector('input');
+let todoInput = document.querySelector('input[type="text"]');
 todoInput.addEventListener('keydown', handleAddTodo);
+let toggleAllCheckbox = document.querySelector('input[type="checkbox"]');
+toggleAllCheckbox.addEventListener('change', handleToggleAll);
 let todoUl = document.querySelector('ul');
 todoUl.addEventListener('change', handleToggleTodo);
 todoUl.addEventListener('click', handleDeleteTodo);

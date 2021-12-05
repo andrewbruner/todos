@@ -10,6 +10,9 @@ const View = function () {
 
   function initialize() {
     let appDiv = document.querySelector('#app');
+    let toggleAllCheckbox = document.createElement('input');
+    toggleAllCheckbox.type = 'checkbox';
+    appDiv.append(toggleAllCheckbox);
     let todoInput = document.createElement('input');
     todoInput.type = 'text';
     todoInput.placeholder = 'What needs to be done?';
