@@ -1,118 +1,116 @@
 import database from './database.js';
 import view from './view.js';
 
-view.viewTodos();
+const App = function() {
 
-function handleAddTodo(event) {
-  if (document.activeElement === todoInput) {
-    if (event.key === 'Enter') {
-      let todoText = document.activeElement.value;
-      document.activeElement.value = '';
-      database.addTodo(todoText);
-      view.addTodo();
+  this.addTodo = addTodo;
+  this.dragStartTodo = dragStartTodo;
+  this.dragTodo = dragTodo;
+  this.dragEnterTodo = dragEnterTodo;
+  this.dragOverTodo = dragOverTodo;
+  this.dragEndTodo = dragEndTodo;
+  this.toggleTodo = toggleTodo;
+  this.toggleAll = toggleAll;
+  this.deleteTodo = deleteTodo;
+
+  function addTodo(event) {
+    let todoInput = document.querySelector('#todoInput');
+    if (document.activeElement === todoInput) {
+      if (event.key === 'Enter') {
+        let todoText = document.activeElement.value;
+        todoInput.value = '';
+        database.addTodo(todoText);
+        view.addTodo();
+      }
+    }
+  }
+  
+  function dragStartTodo(event) {
+    let draggedTodo = event.target;
+    draggedTodo.classList.toggle('isDragging');
+  }
+
+  function dragTodo() {
+    let draggedTodo = document.querySelector('.isDragging');
+    draggedTodo.style.opacity = '0';
+  }
+
+  function dragEnterTodo(event) {
+    let todoLis = document.querySelectorAll('.todo');
+    todoLis = Array.from(todoLis);
+    let draggedTodo = document.querySelector('.isDragging');
+    let draggedOverTodo = event.currentTarget;
+    let draggedTodoIndex = todoLis.indexOf(draggedTodo);
+    let draggedOverTodoIndex = todoLis.indexOf(draggedOverTodo);
+    if (draggedTodoIndex < draggedOverTodoIndex) {
+      console.log('down');
+      draggedTodo.insertAdjacentElement('beforebegin', draggedOverTodo);
+      database.moveTodo(draggedTodoIndex, 'down');
+    } else if (draggedTodoIndex > draggedOverTodoIndex) {
+      draggedTodo.insertAdjacentElement('afterend', draggedOverTodo);
+      database.moveTodo(draggedTodoIndex, 'up');
+    }
+  }
+
+  function dragOverTodo(event) {
+    event.preventDefault();
+  }
+
+  function dragEndTodo() {
+    let draggedTodo = document.querySelector('.isDragging');
+    draggedTodo.classList.toggle('isDragging');
+    draggedTodo.style.opacity = '1';
+  }
+
+  function toggleTodo(event) {
+    let todoLi = event.target.parentElement;
+    let todoLis = document.querySelectorAll('.todo');
+    todoLis = Array.from(todoLis);
+    let index = todoLis.indexOf(todoLi);
+    database.toggleTodo(index);
+    view.toggleTodo(index);
+  }
+
+  function toggleAll() {
+    let toggleAllCheckbox = document.querySelector('#toggleAllCheckbox');
+    let todoLis = document.querySelectorAll('.todo');
+    todoLis = Array.from(todoLis);
+    if (toggleAllCheckbox.checked) {
+      todoLis.map(todoLi => {
+        let todoCheckbox = todoLi.querySelector('.todoCheckbox');
+        if (!todoCheckbox.checked) {
+          todoCheckbox.checked = true;
+          let index = todoLis.indexOf(todoLi);
+          database.toggleTodo(index);
+          view.toggleTodo(index);        
+        }
+      });
+    } else if (!toggleAllCheckbox.checked) {
+      todoLis.map(todoLi => {
+        let todoCheckbox = todoLi.querySelector('.todoCheckbox');
+        if (todoCheckbox.checked) {
+          todoCheckbox.checked = false;
+          let index = todoLis.indexOf(todoLi);
+          database.toggleTodo(index);
+          view.toggleTodo(index);
+        }
+      });
+    }
+  }
+
+  function deleteTodo(event) {
+    if (event.target.tagName === 'BUTTON') {
+      let todoLi = event.target.parentElement;
+      let todoLis = document.querySelectorAll('.todo');
+      todoLis = Array.from(todoUl.children);
+      let index = todoLis.indexOf(todoLi);
+      database.deleteTodo(index);
+      view.deleteTodo(index);
     }
   }
 }
 
-let draggedTodo;
-function handleDragStartTodo(event) {
-  draggedTodo = event.currentTarget;
-  draggedTodo.classList.toggle('isDragging');
-}
+const app = new App();
+export default app;
 
-function handleDragTodo(event) {
-  event.currentTarget.style.opacity = '0';
-}
-
-function handleDragEnterTodo(event) {
-  let todoLis = document.querySelectorAll('li');
-  todoLis = Array.from(todoLis);
-  let draggedOverTodo = event.currentTarget;
-  let draggedTodoIndex = todoLis.indexOf(draggedTodo);
-  let draggedOverTodoIndex = todoLis.indexOf(draggedOverTodo);
-  if (draggedTodoIndex < draggedOverTodoIndex) {
-    draggedTodo.insertAdjacentElement('beforebegin', draggedOverTodo);
-    database.dragTodo(draggedTodoIndex, 'down');
-  } else if (draggedTodoIndex > draggedOverTodoIndex) {
-    draggedTodo.insertAdjacentElement('afterend', draggedOverTodo);
-    database.dragTodo(draggedTodoIndex, 'up');
-  }
-}
-
-function handleDragOverTodo(event) {
-  event.preventDefault();
-}
-
-function handleDragEndTodo(event) {
-  draggedTodo.classList.toggle('isDragging');
-  event.currentTarget.style.opacity = '1';
-}
-
-function handleToggleTodo(event) {
-  let todoLi = event.target.parentElement;
-  let todoLis = Array.from(todoUl.children);
-  let index = todoLis.indexOf(todoLi);
-  database.toggleTodo(index);
-  view.toggleTodo(index);
-}
-
-// Todo: clear ToggleAllCheckbox when adding new todo or unchecking single todo or deleting all current todos
-// aka when all todos are completed, the checkbox should be checked and vice versa
-function handleToggleAll(event) {
-  let toggleAllCheckbox = event.target;
-  let todoLis = Array.from(todoUl.children);
-  if (toggleAllCheckbox.checked) {
-    todoLis.map(todoLi => {
-      if (!todoLi.querySelector('input').checked) {
-        todoLi.querySelector('input').checked = true;
-        let index = todoLis.indexOf(todoLi);
-        database.toggleTodo(index);
-        view.toggleTodo(index);        
-      }
-    });
-  } else if (!toggleAllCheckbox.checked) {
-    todoLis.map(todoLi => {
-      if (todoLi.querySelector('input').checked) {
-        todoLi.querySelector('input').checked = false;
-        let index = todoLis.indexOf(todoLi);
-        database.toggleTodo(index);
-        view.toggleTodo(index);
-      }
-    });
-  }
-}
-
-function handleDeleteTodo(event) {
-  if (event.target.tagName === 'BUTTON') {
-    let todoLi = event.target.parentElement;
-    let todoLis = Array.from(todoUl.children);
-    let index = todoLis.indexOf(todoLi);
-    database.deleteTodo(index);
-    view.deleteTodo(index);
-  }
-}
-
-let todoInput = document.querySelector('input[type="text"]');
-todoInput.addEventListener('keydown', handleAddTodo);
-let toggleAllCheckbox = document.querySelector('input[type="checkbox"]');
-toggleAllCheckbox.addEventListener('change', handleToggleAll);
-let todoUl = document.querySelector('ul');
-todoUl.addEventListener('change', handleToggleTodo);
-todoUl.addEventListener('click', handleDeleteTodo);
-let todoLis = document.querySelectorAll('li');
-todoLis = Array.from(todoLis);
-todoLis.map((todoLi) => {
-  todoLi.addEventListener('dragstart', handleDragStartTodo);
-  todoLi.addEventListener('drag', handleDragTodo);
-  todoLi.addEventListener('dragenter', handleDragEnterTodo);
-  todoLi.addEventListener('dragend', handleDragEndTodo);
-});
-document.addEventListener('dragover', handleDragOverTodo);
-
-const handlers = {
-  handleDragStartTodo: handleDragStartTodo,
-  handleDragTodo: handleDragTodo,
-  handleDragEnterTodo: handleDragEnterTodo,
-  handleDragEndTodo: handleDragEndTodo
-};
-export default handlers;
+view.viewTodos();
