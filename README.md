@@ -12,10 +12,10 @@
 - Reorganize todos via drag-and-drop (before browser refresh)
 - Allow drag-and-drop to update database
 - Toggle all todos at once
+- Display current number of todos left to be done
 
 ### Upcoming Features
 
 - Toggle view of all active or completed todos
-- Display current number of todos left to be done
 
 _Todos is a personal project of [Andrew Bruner](https://github.com/andrewbruner)._
