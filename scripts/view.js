@@ -55,12 +55,34 @@ const View = function () {
     todoUl.addEventListener('change', app.toggleTodo);
     todoUl.addEventListener('click', app.deleteTodo);
     appDiv.append(todoUl);
-
     let todos = database.getTodos();
     todos.map(todo => {
       createTodo(todo, todoUl);
     });
     updateToggleAllCheckbox();
+    let todoFooter = document.createElement('div');
+    todoFooter.id = 'todoFooter';
+    let todoCount = document.createElement('span');
+    todoCount.id = 'todoCount';
+    todoFooter.append(todoCount);
+    appDiv.append(todoFooter);
+    updateTodoCount();
+  }
+
+  function updateTodoCount() {
+    let todoCount = document.querySelector('#todoCount');
+    let todos = database.getTodos();
+    let numberOfTodos = todos.length;
+    todos.map(todo => {
+      if (todo.isCompleted) {
+        numberOfTodos--;
+      }
+    });
+    if (numberOfTodos === 1) {
+      todoCount.textContent = '1 item left';
+    } else {
+      todoCount.textContent = `${numberOfTodos} items left`;
+    }
   }
 
   function addTodo() {
@@ -69,6 +91,7 @@ const View = function () {
     let todoUl = document.querySelector('#todoUl');
     createTodo(todo, todoUl);
     updateToggleAllCheckbox();
+    updateTodoCount();
   }
 
   function toggleTodo(index) {
@@ -78,6 +101,7 @@ const View = function () {
     let todoLabel = todoLi.querySelector('.todoLabel');
     todoLabel.classList.toggle('isCompleted');
     updateToggleAllCheckbox();
+    updateTodoCount();
   }
 
   function updateToggleAllCheckbox() {
@@ -106,6 +130,7 @@ const View = function () {
     let todoLi = todoLis[index];
     todoLi.remove();
     updateToggleAllCheckbox();
+    updateTodoCount();
   }
 };
 

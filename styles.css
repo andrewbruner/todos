@@ -22,37 +22,35 @@ h1 {
   margin: 0 1rem;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
+  height: 1.25rem;
+  width: 1.25rem;
   align-self: center;
   margin: 0 0.5rem;
 }
 
-#app > input[type='checkbox'] {
-  height: 1.25rem;
-  width: 1.25rem;
-}
-
-input[type='text'] {
+#todoInput {
   border: 1px solid var(--todo-border-color);
   flex-grow: 1;
   font-family: var(--todo-font-family);
   font-size: 1rem;
   height: 2rem;
+  margin-bottom: 0.25rem;
   padding: 0 0.25rem;
 }
 
-input:focus {
+#todoInput:focus {
   outline: none;
 }
 
-ul {
+#todoUl {
   list-style: none;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 
-li {
+.todo {
   align-items: center;
   cursor: default;
   display: flex;
@@ -64,16 +62,19 @@ li {
   background: lightgray;
 }
 
-li input {
-  height: 1.25rem;
-  width: 1.25rem;
-}
-
 .isCompleted {
   color: var(--todo-border-color);
   text-decoration: line-through;
 }
 
-li button {
+.todoDeleteButton {
   margin: 0.25rem 0.25rem 0.25rem auto;
+}
+
+#todoFooter {
+  margin-top: 0.5rem;
+}
+
+#todoCount {
+  margin-left: 0.75rem;
 }
